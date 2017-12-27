@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Retrofit_demo</string>
+
+    <string name="jianshu_trending_7day">简书七天热门</string>
+    <string name="title">标题</string>
+    <string name="_abstract">概览</string>
+    <string name="date">日期</string>
+    <string name="author">作者</string>
+</resources>
