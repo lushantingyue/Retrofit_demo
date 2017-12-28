@@ -20,11 +20,9 @@ public class MainPresenterImpl implements MainPresenter, MainModelImpl.OnLoadArt
     private static final String TAG = "MainPresenterImpl";
 
     private MainModelImpl mArticleModel;
-    private Context context;
     private MainView mArticlesView;
 
-    public MainPresenterImpl(Context context, MainView view) {
-        this.context = context;
+    public MainPresenterImpl(MainView view) {
         this.mArticlesView = view;
         this.mArticleModel = new MainModelImpl();
     }
@@ -39,7 +37,7 @@ public class MainPresenterImpl implements MainPresenter, MainModelImpl.OnLoadArt
     public void onSuccess(ArrayList<Articles> list) {
         mArticlesView.addArticles(list);
         mArticlesView.hideProgress();
-        Toast.makeText(context, "加载完成", Toast.LENGTH_SHORT).show();
+        mArticlesView.toastTips();
     }
 
     @Override

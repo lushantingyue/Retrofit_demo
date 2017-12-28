@@ -17,4 +17,6 @@ public interface MainView {
     void hideProgress();
 
     void addArticles(ArrayList<Articles> list);
+
+    void toastTips();
 }

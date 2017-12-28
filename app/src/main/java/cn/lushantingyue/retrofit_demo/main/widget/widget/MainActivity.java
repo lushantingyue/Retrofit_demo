@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         recyclerView.setAdapter(adapter);
 
 //        loadData();
-        mArticlesPresenter = new MainPresenterImpl(ctx, this);
+        mArticlesPresenter = new MainPresenterImpl(this);
     }
 
     @Override
@@ -130,5 +131,10 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     @Override
     public void onRefresh() {
         mArticlesPresenter.loadArticles();
+    }
+
+    @Override
+    public void toastTips() {
+        Toast.makeText(this, "加载完成", Toast.LENGTH_SHORT).show();
     }
 }
