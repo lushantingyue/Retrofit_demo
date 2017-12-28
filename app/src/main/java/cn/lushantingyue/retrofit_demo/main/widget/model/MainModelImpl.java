@@ -48,6 +48,7 @@ public class MainModelImpl implements MainModel {
                     @Override
                     public void onFailure(Call<ArrayList<Articles>> call, Throwable t) {
                         t.printStackTrace();
+                        listener.onFailure("加载数据失败", new Exception("error network."));
                     }
                 });
 
