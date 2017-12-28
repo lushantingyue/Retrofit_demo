@@ -9,13 +9,17 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 /**
- * Created by Administrator on 2017/12/25.
+ * Created by Lushantingyue on 2017/12/25.
  */
 
 public interface ApiService {
 
     @GET("data/jianshu")
     Call<ArrayList<Articles>> listData();
+
+//    分页请求数据
+    @GET("data/jianshu/{pageNO}")
+    Call<ArrayList<Articles>> listDataByPage(@Path("pageNO") String pageNO);
 
     //    http://localhost:3000/data/jianshuDetail/:articalId
     @GET("data/jianshuDetail/{articalId}")

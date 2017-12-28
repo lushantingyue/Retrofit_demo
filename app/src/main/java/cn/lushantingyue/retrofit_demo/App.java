@@ -5,7 +5,10 @@ import android.app.Application;
 import com.orhanobut.logger.Logger;
 
 /**
- * Created by Administrator on 2017/12/26.
+ * Created by Lushantingyue on 2017/12/26.
+ * Responsibilities:
+ * Description:
+ * ProjectName:
  */
 
 public class App extends Application {

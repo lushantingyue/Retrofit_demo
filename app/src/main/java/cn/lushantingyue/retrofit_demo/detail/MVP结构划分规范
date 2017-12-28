@@ -1,0 +1,7 @@
+
+modulename --- 顶层: 按组件职责划分
+    |
+    |--- model 管理本地/后台数据加载
+    |--- presenter 操作中介, 总揽业务逻辑
+    |--- view 视图状态更新
+    |--- widget 加载presenter的控件 Fragment/Activity

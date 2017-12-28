@@ -5,4 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="cardview_theme_background">#ea6f5a</color>
     <color name="bg_black">#000</color>
+
+    <color name="primary">#79838f</color>
+    <color name="primary_dark">#777184</color>
+    <color name="primary_light">#a498ab</color>
+    <color name="accent">#a498ab</color>
+
 </resources>
