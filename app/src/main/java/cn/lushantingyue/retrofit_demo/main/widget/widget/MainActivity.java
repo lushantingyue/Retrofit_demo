@@ -66,6 +66,11 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     }
 
     @Override
+    public void clearArticles() {
+        listData.clear();
+    }
+
+    @Override
     public void addArticles(ArrayList<Articles> list) {
         listData.addAll(list);
         adapter.notifyDataSetChanged();

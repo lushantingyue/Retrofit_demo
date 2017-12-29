@@ -1,8 +1,5 @@
 package cn.lushantingyue.retrofit_demo.main.widget.presenter;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 
 import cn.lushantingyue.retrofit_demo.bean.Articles;
@@ -35,6 +32,7 @@ public class MainPresenterImpl implements MainPresenter, MainModelImpl.OnLoadArt
 
     @Override
     public void onSuccess(ArrayList<Articles> list) {
+        mArticlesView.clearArticles();
         mArticlesView.addArticles(list);
         mArticlesView.hideProgress();
         mArticlesView.toastTips();

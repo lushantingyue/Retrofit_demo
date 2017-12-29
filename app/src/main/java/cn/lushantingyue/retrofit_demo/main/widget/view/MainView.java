@@ -19,4 +19,6 @@ public interface MainView {
     void addArticles(ArrayList<Articles> list);
 
     void toastTips();
+
+    void clearArticles();
 }
