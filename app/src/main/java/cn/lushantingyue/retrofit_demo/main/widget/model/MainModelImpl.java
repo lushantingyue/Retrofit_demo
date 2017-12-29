@@ -56,15 +56,9 @@ public class MainModelImpl implements MainModel {
         }.start();
     }
 
-    @Override
-    public void loadArticlesByPage(int page, MainModelImpl.OnLoadArticlesDetailListener listener) {
-
-    }
-
     public interface OnLoadArticlesListListener {
         void onSuccess(ArrayList<Articles> list);
         void onFailure(String msg, Exception e);
     }
 
-    public interface OnLoadArticlesDetailListener { }
 }

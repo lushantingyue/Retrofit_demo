@@ -12,31 +12,44 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.lushantingyue.retrofit_demo.R;
 import cn.lushantingyue.retrofit_demo.api.ApiService;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
+import cn.lushantingyue.retrofit_demo.detail.view.DetailView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ArticalDetailActivity extends AppCompatActivity {
+public class ArticalDetailActivity extends AppCompatActivity implements DetailView {
 
     private LayoutInflater inflater;
-    private TextView title, author, uid, content, date, wordage;
-    private ImageView avatar;
+//    private TextView title, author, uid, content, date, wordage;
+//    private ImageView avatar;
     private String href;
+
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+
+    @BindView(R.id.title) TextView title;
+    @BindView(R.id.author) TextView author;
+    @BindView(R.id.uid) TextView uid;
+    @BindView(R.id.content) TextView content;
+    @BindView(R.id.date) TextView date;
+    @BindView(R.id.wordage) TextView wordage;
+    @BindView(R.id.avatar) ImageView avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artical_detail);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,43 +58,9 @@ public class ArticalDetailActivity extends AppCompatActivity {
             }
         });
 
-        setView();
+//        setView();
         href = this.getIntent().getExtras().getString("href");
         title.setText(href);
-//        loadData();
-    }
-
-    private void loadData() {
-//        final String api = "http://192.168.2.30:3000/"; // 连内网使用
-//        final String wifi = "http://192.168.155.1:3000/"; // 连本机wifi使用
-//
-//        new Thread(){
-//            @Override
-//            public void run() {
-//
-//                Retrofit retrofit = new Retrofit.Builder()
-//                        .baseUrl(wifi)
-//                        .addConverterFactory(GsonConverterFactory.create())
-//                        .build();
-//                ApiService service = retrofit.create(ApiService.class);
-//                final Call<ArrayList<Articles>> call = service.listData();
-//                call.enqueue(new Callback<ArrayList<Articles>>() {
-//
-//                    @Override
-//                    public void onResponse(Call<ArrayList<Articles>> call, Response<ArrayList<Articles>> response) {
-//                        if (response.body() != null) {
-//                            ArrayList<Articles> resp = response.body();
-////                                listData.addAll(resp);
-//                        }
-//                    }
-//                    @Override
-//                    public void onFailure(Call<ArrayList<Articles>> call, Throwable t) {
-//                        t.printStackTrace();
-//                    }
-//                });
-//
-//            }
-//        }.start();
     }
 
     private void setView() {
@@ -94,4 +73,28 @@ public class ArticalDetailActivity extends AppCompatActivity {
         avatar = findViewById(R.id.avatar);
     }
 
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showTips() {
+
+    }
+
+    @Override
+    public void loadData() {
+
+    }
+
+    @Override
+    public void clearData() {
+
+    }
 }

@@ -10,5 +10,4 @@ package cn.lushantingyue.retrofit_demo.main.widget.model;
 public interface MainModel {
 
     void loadArticles(MainModelImpl.OnLoadArticlesListListener listener);
-    void loadArticlesByPage(int page, MainModelImpl.OnLoadArticlesDetailListener listener);
 }
