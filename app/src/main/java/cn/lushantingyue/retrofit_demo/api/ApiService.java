@@ -1,11 +1,14 @@
 package cn.lushantingyue.retrofit_demo.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -18,8 +21,8 @@ public interface ApiService {
     Call<ArrayList<Articles>> listData();
 
 //    分页请求数据
-    @GET("data/jianshu/{pageNO}")
-    Call<ArrayList<Articles>> listDataByPage(@Path("pageNO") String pageNO);
+    @POST("data/jianshuList")
+    Call<ArrayList<Articles>> listDataByPage(@Body HashMap<String, Integer> page);
 
     //    http://localhost:3000/data/jianshuDetail/:articalId
     @GET("data/jianshuDetail/{articalId}")

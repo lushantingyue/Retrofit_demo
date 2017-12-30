@@ -9,5 +9,5 @@ package cn.lushantingyue.retrofit_demo.main.widget.model;
 
 public interface MainModel {
 
-    void loadArticles(MainModelImpl.OnLoadArticlesListListener listener);
+    void loadArticles(MainModelImpl.OnLoadArticlesListListener listener, int curPage);
 }

@@ -25,9 +25,9 @@ public class MainPresenterImpl implements MainPresenter, MainModelImpl.OnLoadArt
     }
 
     @Override
-    public void loadArticles() {
+    public void loadArticles(int curPage) {
         mArticlesView.showProgress();
-        mArticleModel.loadArticles(this);
+        mArticleModel.loadArticles(this, curPage);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cn.lushantingyue.retrofit_demo.main.widget.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cn.lushantingyue.retrofit_demo.api.ApiService;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
@@ -20,21 +21,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainModelImpl implements MainModel {
 
     @Override
-    public void loadArticles(final MainModelImpl.OnLoadArticlesListListener listener) {
+    public void loadArticles(final OnLoadArticlesListListener listener, final int curPage) {
 
         final String api = "http://192.168.2.30:3000/"; // 连内网使用
         final String wifi = "http://192.168.155.1:3000/"; // 连本机wifi使用
+        final String wifi2 = "http://192.168.1.105:3000/";
 
         new Thread() {
             @Override
             public void run() {
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(wifi)
+                        .baseUrl(wifi2)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 ApiService service = retrofit.create(ApiService.class);
-                final Call<ArrayList<Articles>> call = service.listData();
+//                final Call<ArrayList<Articles>> call = service.listData();
+                HashMap<String, Integer> params = new HashMap<String, Integer>();
+                params.put("page", curPage);
+                Call<ArrayList<Articles>> call = service.listDataByPage(params);
                 call.enqueue(new Callback<ArrayList<Articles>>() {
 
                     @Override

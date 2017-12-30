@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     private LinearLayoutManager linearLayoutManager;
     private ListRecyclerAdapter adapter;
     private MainPresenterImpl mArticlesPresenter;
+    private int curPage = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     @Override
     protected void onResume() {
         super.onResume();
-        mArticlesPresenter.loadArticles();
+        mArticlesPresenter.loadArticles(curPage);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
 
     @Override
     public void onRefresh() {
-        mArticlesPresenter.loadArticles();
+        mArticlesPresenter.loadArticles(curPage);
     }
 
     @Override

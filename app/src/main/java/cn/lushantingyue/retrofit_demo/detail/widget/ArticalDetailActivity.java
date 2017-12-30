@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import cn.lushantingyue.retrofit_demo.R;
 import cn.lushantingyue.retrofit_demo.api.ApiService;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
+import cn.lushantingyue.retrofit_demo.detail.presenter.DetailPresenterImpl;
 import cn.lushantingyue.retrofit_demo.detail.view.DetailView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,6 +62,8 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
 //        setView();
         href = this.getIntent().getExtras().getString("href");
         title.setText(href);
+
+        new DetailPresenterImpl();
     }
 
     private void setView() {
