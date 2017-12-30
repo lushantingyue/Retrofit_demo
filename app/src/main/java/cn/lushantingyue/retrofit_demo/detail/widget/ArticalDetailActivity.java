@@ -1,14 +1,21 @@
 package cn.lushantingyue.retrofit_demo.detail.widget;
 
+import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -16,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.lushantingyue.retrofit_demo.R;
 import cn.lushantingyue.retrofit_demo.api.ApiService;
+import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
 import cn.lushantingyue.retrofit_demo.detail.presenter.DetailPresenterImpl;
 import cn.lushantingyue.retrofit_demo.detail.view.DetailView;
@@ -25,7 +33,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ArticalDetailActivity extends AppCompatActivity implements DetailView {
+public class ArticalDetailActivity extends AppCompatActivity implements DetailView, SwipeRefreshLayout.OnRefreshListener {
 
     private LayoutInflater inflater;
 //    private TextView title, author, uid, content, date, wordage;
@@ -43,14 +51,21 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
     @BindView(R.id.wordage) TextView wordage;
     @BindView(R.id.avatar) ImageView avatar;
 
+    @BindView(R.id.swipe_refresh_layout_detail) SwipeRefreshLayout refreshWidget;
+
+    private DetailPresenterImpl mPresenter;
+    private ArticleDetail data = new ArticleDetail();
+    private Activity act;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artical_detail);
 
+        act = ArticalDetailActivity.this;
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
+        refreshWidget.setOnRefreshListener(this);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,41 +78,62 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
         href = this.getIntent().getExtras().getString("href");
         title.setText(href);
 
-        new DetailPresenterImpl();
+        mPresenter = new DetailPresenterImpl(this);
     }
 
-    private void setView() {
-        title = findViewById(R.id.title);
-        author = findViewById(R.id.author);
-        uid = findViewById(R.id.uid);
-        content = findViewById(R.id.content);
-        date = findViewById(R.id.date);
-        wordage = findViewById(R.id.wordage);
-        avatar = findViewById(R.id.avatar);
+//    private void setView() {
+//        title = findViewById(R.id.title);
+//        author = findViewById(R.id.author);
+//        uid = findViewById(R.id.uid);
+//        content = findViewById(R.id.content);
+//        date = findViewById(R.id.date);
+//        wordage = findViewById(R.id.wordage);
+//        avatar = findViewById(R.id.avatar);
+//    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Logger.i("onResume ArticalDetail >>>");
+        mPresenter.loadDetail(href);
     }
 
     @Override
     public void showProgress() {
-
+        refreshWidget.setRefreshing(true);
     }
 
     @Override
     public void hideProgress() {
-
+        refreshWidget.setRefreshing(false);
     }
 
     @Override
     public void showTips() {
-
+        Toast.makeText(act, "文章详情--加载完成", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void loadData() {
+    public void loadData(ArticleDetail data) {
 
+        this.data = data;
+        Logger.i("loadData >>> ");
+        title.setText(data.getTitle());
+        author.setText(data.getAuthor());
+        String path = "http:" + data.getAvatar();
+        Glide.with(act).load(path).into(avatar);
+        content.setText(data.getText().toString());
+        date.setText(data.getDate());
+        wordage.setText(data.getWordage());
     }
 
     @Override
     public void clearData() {
+        this.data = null;
+    }
 
+    @Override
+    public void onRefresh() {
+        mPresenter.loadDetail(href);
     }
 }

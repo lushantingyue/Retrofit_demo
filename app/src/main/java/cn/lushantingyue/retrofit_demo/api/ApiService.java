@@ -17,14 +17,16 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
+    //    请求全部数据
     @GET("data/jianshu")
     Call<ArrayList<Articles>> listData();
 
-//    分页请求数据
+    //    分页请求数据
     @POST("data/jianshuList")
     Call<ArrayList<Articles>> listDataByPage(@Body HashMap<String, Integer> page);
 
     //    http://localhost:3000/data/jianshuDetail/:articalId
+    //  根据文章关联href 请求文章详情
     @GET("data/jianshuDetail/{articalId}")
     Call<ArticleDetail> articleDetail(@Path("articalId") String articalId);
 }

@@ -10,5 +10,6 @@
     <color name="primary_dark">#777184</color>
     <color name="primary_light">#a498ab</color>
     <color name="accent">#a498ab</color>
+    <color name="orange">#f26b3a</color>
 
 </resources>

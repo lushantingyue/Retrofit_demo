@@ -1,11 +1,16 @@
 package cn.lushantingyue.retrofit_demo.main.widget.widget;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -13,11 +18,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.lushantingyue.retrofit_demo.R;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
+import cn.lushantingyue.retrofit_demo.detail.widget.ArticalDetailActivity;
+import cn.lushantingyue.retrofit_demo.listener.MyItemClickListener;
 import cn.lushantingyue.retrofit_demo.main.widget.ListRecyclerAdapter;
 import cn.lushantingyue.retrofit_demo.main.widget.presenter.MainPresenterImpl;
 import cn.lushantingyue.retrofit_demo.main.widget.view.MainView;
 
-public class MainActivity extends AppCompatActivity implements MainView, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements MainView, SwipeRefreshLayout.OnRefreshListener, MyItemClickListener {
 
     ArrayList<Articles> listData = new ArrayList<>();
 
@@ -51,10 +58,11 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
 
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
+        linearLayoutManager.setItemPrefetchEnabled(true);
 
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        adapter = new ListRecyclerAdapter(ctx, listData);
+        adapter = new ListRecyclerAdapter(ctx, listData, this);
         recyclerView.setAdapter(adapter);
 
         mArticlesPresenter = new MainPresenterImpl(this);
@@ -96,4 +104,26 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     public void toastTips() {
         Toast.makeText(this, "加载完成", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onItemClick(View child, int position){
+        // 跳转文章详情页
+        Intent intent = new Intent(ctx, ArticalDetailActivity.class);
+        Articles bean = listData.get(position);
+        Logger.i("listData is: "+ bean.getHref());
+        intent.putExtra("href", bean.getHref());
+        startActivity(intent);
+    }
+
+//    /**
+//     * Perform an item click operation on the specified list adapter position.
+//     *
+//     * @param position Adapter position for performing the click
+//     * @return true if the click action could be performed, false if not.
+//     *         (e.g. if the popup was not showing, this method would return false.)
+//     */
+//    public boolean performItemClick(int position) {
+//        ...
+//    }
+
 }

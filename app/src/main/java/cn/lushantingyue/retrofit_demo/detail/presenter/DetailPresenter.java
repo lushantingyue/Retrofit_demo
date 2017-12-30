@@ -9,5 +9,5 @@ package cn.lushantingyue.retrofit_demo.detail.presenter;
 
 public interface DetailPresenter {
 
-    void loadDetail();
+    void loadDetail(String href);
 }
