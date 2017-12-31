@@ -48,6 +48,13 @@
         android:background="@color/orange"
         android:text="内容" />
 
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </WebView>
+
     <TextView
         android:id="@+id/date"
         android:layout_marginLeft="5dp"
