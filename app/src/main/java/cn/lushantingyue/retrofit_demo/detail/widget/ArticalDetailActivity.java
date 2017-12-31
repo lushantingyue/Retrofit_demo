@@ -167,7 +167,9 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
         webView.removeJavascriptInterface("accessibility");
         webView.removeJavascriptInterface("accessibilityTraversal");
 
-//        webView.loadUrl(text);
+        while (text.contains("\n")) {
+            text = text.replace("\n", "");
+        }
         webView.loadData(text, "text/html; charset=UTF-8", null);
     }
 
