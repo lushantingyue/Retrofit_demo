@@ -3,6 +3,7 @@ package cn.lushantingyue.retrofit_demo.detail.model;
 import cn.lushantingyue.retrofit_demo.api.ApiService;
 import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
+import cn.lushantingyue.retrofit_demo.utils.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,14 +23,13 @@ public class DetailModelImpl implements DetailModel {
     @Override
     public void loadArticlesDetail(final String href, final DetailModelImpl.OnLoadArticlesDetailListener listener) {
 //        RetrofitWrapper.getInstance().
-        final String wifi2 = "http://192.168.1.105:3000/";
 
         new Thread() {
             @Override
             public void run() {
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(wifi2)
+                        .baseUrl(Constant.baseUrl)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 ApiService service = retrofit.create(ApiService.class);

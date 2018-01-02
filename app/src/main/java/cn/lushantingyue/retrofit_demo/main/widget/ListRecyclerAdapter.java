@@ -104,46 +104,6 @@ public class ListRecyclerAdapter extends Adapter<ListRecyclerAdapter.DefineViewH
                 }
             });
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                        final String api = "http://192.168.2.30:3000/"; // 连内网使用
-//                        final String wifi = "http://192.168.155.1:3000/"; // 连本机wifi使用
-//
-//                        new Thread() {
-//                            @Override
-//                            public void run() {
-//                                Retrofit retrofit = new Retrofit.Builder()
-//                                        .baseUrl(wifi)
-//                                        .addConverterFactory(GsonConverterFactory.create())
-//                                        .build();
-//                                ApiService service = retrofit.create(ApiService.class);
-//
-//                                Call<ArticleDetail> call = service.articleDetail(href);
-//                                call.enqueue(new Callback<ArticleDetail>() {
-//
-//
-//                                    @Override
-//                                    public void onResponse(Call<ArticleDetail> call, Response<ArticleDetail> response) {
-//                                        if (response.body() != null) {
-//                                            ArticleDetail resp = response.body();
-//                                            String title = resp.getTitle() + resp.getAuthor();
-//                                            Intent intent = new Intent(ctx, ArticalDetailActivity.class);
-//                                            intent.putExtra("href", resp.getHref());
-//                                            ctx.startActivity(intent);
-//                                            com.orhanobut.logger.Logger.i(title + ">>>>>>>>>>>>>>>>>>>>>");
-//                                        }
-//
-//                                    }
-//                                    @Override
-//                                    public void onFailure(Call<ArticleDetail> call, Throwable t) {
-//                                        t.printStackTrace();
-//                                    }
-//                                });
-//                            }
-//                        }.start();
-//                }
-//            });
         }
 
         public void setData(String text, String href) {

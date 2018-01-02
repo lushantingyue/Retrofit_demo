@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import cn.lushantingyue.retrofit_demo.api.ApiService;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
+import cn.lushantingyue.retrofit_demo.utils.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,16 +24,12 @@ public class MainModelImpl implements MainModel {
     @Override
     public void loadArticles(final OnLoadArticlesListListener listener, final int curPage) {
 
-        final String api = "http://192.168.2.30:3000/"; // 连内网使用
-        final String wifi = "http://192.168.155.1:3000/"; // 连本机wifi使用
-        final String wifi2 = "http://192.168.1.105:3000/";
-
         new Thread() {
             @Override
             public void run() {
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(wifi2)
+                        .baseUrl(Constant.baseUrl)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 ApiService service = retrofit.create(ApiService.class);

@@ -41,7 +41,6 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
     @BindView(R.id.author) TextView author;
     @BindView(R.id.uid) TextView uid;
     @BindView(R.id.content) TextView content;
-    @BindView(R.id.webView) WebView webView;
     @BindView(R.id.date) TextView date;
     @BindView(R.id.wordage) TextView wordage;
     @BindView(R.id.avatar) ImageView avatar;
@@ -68,14 +67,6 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
                         .setAction("Action", null).show();
             }
         });
-        // 设置长按监听, 屏蔽复制内容功能
-        webView.setOnLongClickListener(new View.OnLongClickListener() {
-
-            @Override
-            public boolean onLongClick(View v) {
-                return true;
-            }
-        });
 
 //        setView();
         href = this.getIntent().getExtras().getString("href");
@@ -97,16 +88,9 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
     @Override
     protected void onResume() {
         super.onResume();
-        webView.onResume();
 
         Logger.i("onResume ArticalDetail >>>");
         mPresenter.loadDetail(href);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        webView.onPause();
     }
 
     @Override
@@ -143,71 +127,11 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
         wordage.setText(data.getWordage());
 
 //        content.setText(data.getText());
-        setWebViewProperties(data.getText());
-    }
-
-    private void setWebViewProperties(String text) {
-
-        WebSettings settings = webView.getSettings();
-        settings.setCacheMode(WebSettings.LOAD_DEFAULT); // 不缓存
-        settings.setJavaScriptEnabled(true); // 允许JavaScript执行
-        settings.setDefaultTextEncodingName("UTF-8"); // 设置默认编码
-        settings.setLoadWithOverviewMode(true); // 页面适应手机屏幕的分辨率
-        settings.setUseWideViewPort(true); // 尺度的网页在HTML定义
-        settings.setBuiltInZoomControls(true); // 显示放大缩小 controler
-        settings.setSupportZoom(true); // 可以缩放
-        settings.setJavaScriptCanOpenWindowsAutomatically(true); // 直接JS打开新的窗口，相当于外链接
-        settings.setAllowFileAccess(false); //提高安全性, 禁止访问本地文件
-        // ws.setPluginsEnabled(true);
-        // ws.setPluginState(PluginState.ON);
-        webView.setWebChromeClient(new WebViewChromeClient());
-        webView.setWebViewClient(new MyWebViewClient());
-        // 移除远程代码执行漏洞
-        webView.removeJavascriptInterface("searchBoxJavaBridge_");
-        webView.removeJavascriptInterface("accessibility");
-        webView.removeJavascriptInterface("accessibilityTraversal");
-
-        while (text.contains("\n")) {
-            text = text.replace("\n", "");
-        }
-        webView.loadData(text, "text/html; charset=UTF-8", null);
-    }
-
-    private class WebViewChromeClient extends WebChromeClient {
-        /**
-         * 加载进度条
-         */
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-//            pb.setProgress(newProgress);
-//            if (newProgress == 100) {
-//                pb.setVisibility(View.GONE);
-//            }
-            super.onProgressChanged(view, newProgress);
-        }
-    }
-
-    /**
-     * 控制网页都在webview里显示
-     */
-    public class MyWebViewClient extends WebViewClient {
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//            pb.setVisibility(View.VISIBLE);
-            view.loadUrl(url);
-            view.setWebChromeClient(new WebViewChromeClient());
-            return true;
-        }
-
-        @Override
-        public void onReceivedError(WebView view, int errorCode,
-                                    String description, String failingUrl) {
-            super.onReceivedError(view, errorCode, description, failingUrl);
-//            refresh_btn.setVisibility(View.VISIBLE);
-            Logger.i( "loading url Error, no Data >>>>>> ");
-            // mainView.invalidate();
-        }
+        String text = data.getText();
+//        while (text.contains("\n")) {
+//            text = text.replace("\n", "");
+//        }
+        content.setText(text);
     }
 
     @Override
