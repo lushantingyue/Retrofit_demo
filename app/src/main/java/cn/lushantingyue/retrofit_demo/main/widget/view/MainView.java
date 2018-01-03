@@ -21,4 +21,6 @@ public interface MainView {
     void toastTips();
 
     void clearArticles();
+
+    void hideLoadMoreFooter();
 }

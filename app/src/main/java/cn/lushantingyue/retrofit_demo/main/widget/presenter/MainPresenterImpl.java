@@ -35,7 +35,11 @@ public class MainPresenterImpl implements MainPresenter, MainModelImpl.OnLoadArt
         if (page == 1) {
             mArticlesView.clearArticles();
         }
-        mArticlesView.addArticles(list);
+        if (list.size() > 0) {
+            mArticlesView.addArticles(list);
+        } else {
+//            mArticlesView.hideLoadMoreFooter();
+        }
         mArticlesView.hideProgress();
         mArticlesView.toastTips();
     }

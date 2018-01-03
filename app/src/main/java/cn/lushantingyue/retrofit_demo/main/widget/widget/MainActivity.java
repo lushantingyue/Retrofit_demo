@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.orhanobut.logger.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
+import com.zhy.adapter.recyclerview.wrapper.EmptyWrapper;
 import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 import com.zhy.adapter.recyclerview.wrapper.LoadMoreWrapper;
 
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
             }
         };
         initHeaderAndFooter();
+
         mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
         mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
         mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
@@ -157,6 +160,11 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     @Override
     public void toastTips() {
         Toast.makeText(this, "加载完成", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void hideLoadMoreFooter() {
+//        mHeaderAndFooterWrapper.notifyDataSetChanged();
     }
 
     @Override
