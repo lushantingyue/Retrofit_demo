@@ -43,7 +43,7 @@ public class MainModelImpl implements MainModel {
                     public void onResponse(Call<ArrayList<Articles>> call, Response<ArrayList<Articles>> response) {
                         if (response.body() != null) {
                             ArrayList<Articles> resp = response.body();
-                            listener.onSuccess(resp);
+                            listener.onSuccess(resp, curPage);
                         }
                     }
 
@@ -59,7 +59,7 @@ public class MainModelImpl implements MainModel {
     }
 
     public interface OnLoadArticlesListListener {
-        void onSuccess(ArrayList<Articles> list);
+        void onSuccess(ArrayList<Articles> list, int page);
         void onFailure(String msg, Exception e);
     }
 

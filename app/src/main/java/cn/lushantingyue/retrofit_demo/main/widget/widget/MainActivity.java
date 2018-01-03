@@ -2,15 +2,21 @@ package cn.lushantingyue.retrofit_demo.main.widget.widget;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
+import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
+import com.zhy.adapter.recyclerview.wrapper.LoadMoreWrapper;
 
 import java.util.ArrayList;
 
@@ -38,9 +44,13 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
 //    private RecyclerView recyclerView;
 //    private SwipeRefreshLayout mSwipeRefreshWidget;
     private LinearLayoutManager linearLayoutManager;
-    private ListRecyclerAdapter adapter;
+//    private ListRecyclerAdapter adapter;
     private MainPresenterImpl mArticlesPresenter;
-    private int curPage = 6;
+    private int curPage = 1;
+
+    private CommonAdapter<Articles> mAdapter;
+    private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
+    private LoadMoreWrapper mLoadMoreWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +71,53 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         linearLayoutManager.setItemPrefetchEnabled(true);
 
         recyclerView.setLayoutManager(linearLayoutManager);
+        mAdapter = new CommonAdapter<Articles>(this, R.layout.item, listData) {
+            @Override
+            protected void convert(ViewHolder holder, Articles article, int position) {
+                holder.setText(R.id.tv_title, article.get_abstract());
+            }
+        };
+        initHeaderAndFooter();
+        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
+        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
+        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                curPage++;
+                mArticlesPresenter.loadArticles(curPage);
+            }
+        });
+//        adapter = new ListRecyclerAdapter(ctx, listData, this);
+//        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(mLoadMoreWrapper);
+        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                // 跳转文章详情页
+                Intent intent = new Intent(ctx, ArticalDetailActivity.class);
+                Articles bean = listData.get(position);
+                Logger.i("listData is: "+ bean.getHref());
+                intent.putExtra("href", bean.getHref());
+                startActivity(intent);
+            }
 
-        adapter = new ListRecyclerAdapter(ctx, listData, this);
-        recyclerView.setAdapter(adapter);
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
 
         mArticlesPresenter = new MainPresenterImpl(this);
+    }
+
+    private void initHeaderAndFooter() {
+        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
+        TextView t1 = new TextView(this);
+        t1.setText(" -- 顶部视图 -- ");
+        TextView b1 = new TextView(this);
+        b1.setText(" -- 底部视图 -- ");
+        mHeaderAndFooterWrapper.addHeaderView(t1);
+        mHeaderAndFooterWrapper.addFootView(b1);
     }
 
     @Override
@@ -82,7 +134,8 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     @Override
     public void addArticles(ArrayList<Articles> list) {
         listData.addAll(list);
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
+        mLoadMoreWrapper.notifyDataSetChanged();
     }
 
     @Override
@@ -97,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
 
     @Override
     public void onRefresh() {
+        curPage = 1;
         mArticlesPresenter.loadArticles(curPage);
     }
 
@@ -114,16 +168,5 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         intent.putExtra("href", bean.getHref());
         startActivity(intent);
     }
-
-//    /**
-//     * Perform an item click operation on the specified list adapter position.
-//     *
-//     * @param position Adapter position for performing the click
-//     * @return true if the click action could be performed, false if not.
-//     *         (e.g. if the popup was not showing, this method would return false.)
-//     */
-//    public boolean performItemClick(int position) {
-//        ...
-//    }
 
 }

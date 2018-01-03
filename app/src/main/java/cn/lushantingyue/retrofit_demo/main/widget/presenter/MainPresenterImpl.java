@@ -31,8 +31,10 @@ public class MainPresenterImpl implements MainPresenter, MainModelImpl.OnLoadArt
     }
 
     @Override
-    public void onSuccess(ArrayList<Articles> list) {
-        mArticlesView.clearArticles();
+    public void onSuccess(ArrayList<Articles> list, int page) {
+        if (page == 1) {
+            mArticlesView.clearArticles();
+        }
         mArticlesView.addArticles(list);
         mArticlesView.hideProgress();
         mArticlesView.toastTips();
