@@ -11,5 +11,5 @@
     <string name="content">内容</string>
     <string name="wordage">字数</string>
 
-    <string name="loading_status">正在加载...</string>
+    <string name="loading_status">正在加载&#8230;</string>
 </resources>
