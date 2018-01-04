@@ -1,7 +1,10 @@
 package cn.lushantingyue.retrofit_demo.bean;
 
 /**
- * Created by Lushantingyue on 2017/12/26.
+ * Created by Lushantingyue on 2017/12/26 16.
+ * Responsibilities:
+ * Description:
+ * ProjectName:
  */
 
 public class ArticleDetail {

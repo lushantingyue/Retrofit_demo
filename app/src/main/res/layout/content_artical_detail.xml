@@ -38,7 +38,8 @@
         android:layout_marginTop="2dp"
         android:layout_marginBottom="6dp"
         android:layout_width="32dp"
-        android:layout_height="32dp" />
+        android:layout_height="32dp"
+        android:contentDescription="avatar" />
 
     <TextView
         android:id="@+id/content"

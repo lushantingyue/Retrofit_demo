@@ -12,7 +12,10 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
- * Created by Lushantingyue on 2017/12/25.
+ * Created by Lushantingyue on 2017/12/25 16.
+ * Responsibilities:
+ * Description:
+ * ProjectName:
  */
 
 public interface ApiService {
