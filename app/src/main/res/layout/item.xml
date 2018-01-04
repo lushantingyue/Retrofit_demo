@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="5dp"
-    android:background="@color/colorPrimary"
     android:clickable="true"
     app:cardBackgroundColor="@color/cardview_theme_background"
     app:cardCornerRadius="10dp"
     app:cardElevation="8dp"
-    app:contentPadding="8dp">
+    app:contentPadding="8dp"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/tv_title"

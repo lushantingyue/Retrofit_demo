@@ -43,10 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
 
     private MainActivity ctx;
 
-//    private RecyclerView recyclerView;
-//    private SwipeRefreshLayout mSwipeRefreshWidget;
-    private LinearLayoutManager linearLayoutManager;
-//    private ListRecyclerAdapter adapter;
+    //    private ListRecyclerAdapter adapter;
     private MainPresenterImpl mArticlesPresenter;
     private int curPage = 1;
 
@@ -68,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
 //        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         linearLayoutManager.setItemPrefetchEnabled(true);
 

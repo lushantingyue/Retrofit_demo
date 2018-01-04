@@ -6,5 +6,10 @@
     <string name="_abstract">概览</string>
     <string name="date">日期</string>
     <string name="author">作者</string>
-    <string name="title_activity_artical_detail">ArticalDetailActivity</string>
+    <string name="uid">作者ID</string>
+    <string name="title_activity_artical_detail">简书七天热门--热门</string>
+    <string name="content">内容</string>
+    <string name="wordage">字数</string>
+
+    <string name="loading_status">正在加载...</string>
 </resources>

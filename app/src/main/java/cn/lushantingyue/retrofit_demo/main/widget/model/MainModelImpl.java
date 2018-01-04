@@ -34,7 +34,7 @@ public class MainModelImpl implements MainModel {
                         .build();
                 ApiService service = retrofit.create(ApiService.class);
 //                final Call<ArrayList<Articles>> call = service.listData();
-                HashMap<String, Integer> params = new HashMap<String, Integer>();
+                HashMap<String, Integer> params = new HashMap<>();
                 params.put("page", curPage);
                 Call<ArrayList<Articles>> call = service.listDataByPage(params);
                 call.enqueue(new Callback<ArrayList<Articles>>() {
