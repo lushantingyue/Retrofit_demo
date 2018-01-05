@@ -7,8 +7,11 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import cn.lushantingyue.retrofit_demo.api.ApiService;
+import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
+import cn.lushantingyue.retrofit_demo.detail.model.DetailModelImpl;
 import cn.lushantingyue.retrofit_demo.main.widget.model.MainModelImpl;
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -82,4 +85,35 @@ public class RetrofitWrapper {
                     }
                 });
     }
+
+    public void articleDetail(final DetailModelImpl.OnLoadArticlesDetailListener listener, String href) {
+
+        getInstance().RetrofitBuilder();
+        Observable<ArticleDetail> observable = service.articleDetail(href);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArticleDetail>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        listener.saveDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(ArticleDetail articleDetail) {
+                        listener.onSuccess(articleDetail);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onFailure("数据加载错误", new Exception("retrofit request erro."));
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
 }
