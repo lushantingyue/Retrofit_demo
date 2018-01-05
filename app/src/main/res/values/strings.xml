@@ -12,4 +12,7 @@
     <string name="wordage">字数</string>
 
     <string name="loading_status">正在加载&#8230;</string>
+
+    <string name="toast_loading_success">加载完成</string>
+    <string name="toast_loading_failure">加载数据失败</string>
 </resources>
