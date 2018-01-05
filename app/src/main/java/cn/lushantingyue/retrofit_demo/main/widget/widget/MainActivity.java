@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
      public void sayHi(FloatingActionButton fab) {
         Snackbar.make(fab, "置顶", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+        recyclerView.smoothScrollToPosition(0);
     }
 
     private MainActivity ctx;

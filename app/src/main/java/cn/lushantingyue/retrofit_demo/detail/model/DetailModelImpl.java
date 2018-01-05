@@ -27,25 +27,6 @@ public class DetailModelImpl implements DetailModel {
 
         String subHref = href.split("/p/")[1];
         RetrofitWrapper.getInstance().articleDetail(listener, subHref);
-
-//                Call<ArticleDetail> call = service.articleDetail(subHref);
-//            call.enqueue(new Callback<ArticleDetail>() {
-//
-//                @Override
-//                public void onResponse(Call<ArticleDetail> call, Response<ArticleDetail> response) {
-//                    if (response.body() != null) {
-//                        ArticleDetail resp = response.body();
-//                        listener.onSuccess(resp);
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<ArticleDetail> call, Throwable t) {
-//                    t.printStackTrace();
-//                    listener.onFailure("加载数据失败", new Exception("error network."));
-//                }
-//            });
-
     }
 
     /**
