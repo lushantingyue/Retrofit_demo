@@ -144,6 +144,7 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
     @Override
     public void saveDisposable(Disposable d) {
         dispose.add(d);
+        Logger.i("add dispose");
     }
 
     @Override
@@ -151,6 +152,7 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
         super.onDestroy();
         for (int i = 0; i < dispose.size(); i++) {
             dispose.remove(i).dispose();
+            Logger.i("remove dispose: " + i);
         }
     }
 }

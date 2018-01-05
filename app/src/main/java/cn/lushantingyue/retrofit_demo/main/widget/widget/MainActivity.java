@@ -127,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         t1.setText(" -- 顶部视图 -- ");
         TextView b1 = new TextView(this);
         b1.setText(" -- 底部视图 -- ");
-        mHeaderAndFooterWrapper.addHeaderView(t1);
-        mHeaderAndFooterWrapper.addFootView(b1);
+//        mHeaderAndFooterWrapper.addHeaderView(t1);
+//        mHeaderAndFooterWrapper.addFootView(b1);
     }
 
     @Override
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
             listData.addAll(list);
         } else {
             this.canloadMore = false;
-            mLoadMoreWrapper.setLoadMoreView(R.layout.bottom);
         }
         mLoadMoreWrapper.notifyDataSetChanged();
     }
@@ -178,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     public void toastTips(int status) {
         switch (status) {
             case STATUS_LOADING_SUCCESS:
+                Logger.i("item count= "+ mLoadMoreWrapper.getItemCount());
                 Toast.makeText(this, "加载完成", Toast.LENGTH_SHORT).show();
                 break;
             case STATUS_LOADING_FAILURE:
@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     @Override
     public void saveDisposable(Disposable d) {
         dispose.add(d);
+        Logger.i("add dispose");
     }
 
     @Override
@@ -208,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         super.onDestroy();
         for (int i = 0; i < dispose.size(); i++) {
             dispose.remove(i).dispose();
+            Logger.i("remove dispose");
         }
     }
 }
