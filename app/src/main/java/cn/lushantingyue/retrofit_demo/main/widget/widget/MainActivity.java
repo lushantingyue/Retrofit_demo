@@ -2,10 +2,13 @@ package cn.lushantingyue.retrofit_demo.main.widget.widget;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.lushantingyue.retrofit_demo.R;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
 import cn.lushantingyue.retrofit_demo.detail.widget.ArticalDetailActivity;
@@ -32,10 +36,17 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
 
     ArrayList<Articles> listData = new ArrayList<>();
 
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout mSwipeRefreshWidget;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshWidget;
+
+    @OnClick(R.id.fab)
+     public void sayHi(FloatingActionButton fab) {
+        Snackbar.make(fab, "置顶", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
 
     private MainActivity ctx;
 
@@ -56,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         ctx = MainActivity.this;
 
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 //        mSwipeRefreshWidget = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshWidget.setColorSchemeColors(getResources().getColor(R.color.primary), getResources().getColor(R.color.primary_dark),
                 getResources().getColor(R.color.primary_light), getResources().getColor(R.color.accent));

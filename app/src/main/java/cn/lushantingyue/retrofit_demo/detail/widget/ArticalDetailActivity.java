@@ -9,10 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,7 +76,7 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
         mPresenter = new DetailPresenterImpl(this);
     }
 
-//    private void setView() {
+    //    private void setView() {
 //        title = findViewById(R.id.title);
 //        author = findViewById(R.id.author);
 //        uid = findViewById(R.id.uid);
