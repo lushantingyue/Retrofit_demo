@@ -9,10 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,12 +16,15 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.lushantingyue.retrofit_demo.R;
 import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
 import cn.lushantingyue.retrofit_demo.detail.presenter.DetailPresenterImpl;
 import cn.lushantingyue.retrofit_demo.detail.view.DetailView;
+import io.reactivex.disposables.Disposable;
 
 public class ArticalDetailActivity extends AppCompatActivity implements DetailView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -50,6 +49,7 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
     private DetailPresenterImpl mPresenter;
     private ArticleDetail data = new ArticleDetail();
     private Activity act;
+    private ArrayList<Disposable> dispose = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
         mPresenter = new DetailPresenterImpl(this);
     }
 
-//    private void setView() {
+    //    private void setView() {
 //        title = findViewById(R.id.title);
 //        author = findViewById(R.id.author);
 //        uid = findViewById(R.id.uid);
@@ -127,11 +127,7 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
         date.setText(data.getDate());
         wordage.setText(data.getWordage());
 
-//        content.setText(data.getText());
         String text = data.getText();
-//        while (text.contains("\n")) {
-//            text = text.replace("\n", "");
-//        }
         content.setText(text);
     }
 
@@ -143,5 +139,18 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
     @Override
     public void onRefresh() {
         mPresenter.loadDetail(href);
+    }
+
+    @Override
+    public void saveDisposable(Disposable d) {
+        dispose.add(d);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for (int i = 0; i < dispose.size(); i++) {
+            dispose.remove(i).dispose();
+        }
     }
 }

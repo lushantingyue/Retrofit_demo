@@ -9,5 +9,5 @@ package cn.lushantingyue.retrofit_demo.main.widget.presenter;
 
 public interface MainPresenter {
 
-    void loadArticles(int curPage);
+    void loadArticles(int curPage, boolean loadMore);
 }

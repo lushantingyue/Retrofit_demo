@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,14 +24,14 @@ public interface ApiService {
 
     //    请求全部数据
     @GET("data/jianshu")
-    Call<ArrayList<Articles>> listData();
+    Observable<ArrayList<Articles>> listData();
 
     //    分页请求数据
     @POST("data/jianshuList")
-    Call<ArrayList<Articles>> listDataByPage(@Body HashMap<String, Integer> page);
+    Observable<ArrayList<Articles>> listDataByPage(@Body HashMap<String, Integer> page);
 
     //    http://localhost:3000/data/jianshuDetail/:articalId
     //  根据文章关联href 请求文章详情
     @GET("data/jianshuDetail/{articalId}")
-    Call<ArticleDetail> articleDetail(@Path("articalId") String articalId);
+    Observable<ArticleDetail> articleDetail(@Path("articalId") String articalId);
 }

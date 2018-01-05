@@ -10,6 +10,7 @@ import cn.lushantingyue.retrofit_demo.detail.model.DetailModel;
 import cn.lushantingyue.retrofit_demo.detail.model.DetailModelImpl;
 import cn.lushantingyue.retrofit_demo.detail.view.DetailView;
 import cn.lushantingyue.retrofit_demo.detail.widget.ArticalDetailActivity;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Administrator on 2017/12/29 11.
@@ -45,5 +46,10 @@ public class DetailPresenterImpl implements DetailPresenter, DetailModelImpl.OnL
     @Override
     public void onFailure(String msg, Exception e) {
 
+    }
+
+    @Override
+    public void saveDisposable(Disposable d) {
+        mView.saveDisposable(d);
     }
 }

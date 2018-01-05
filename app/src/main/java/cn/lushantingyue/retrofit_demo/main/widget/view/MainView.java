@@ -3,6 +3,7 @@ package cn.lushantingyue.retrofit_demo.main.widget.view;
 import java.util.ArrayList;
 
 import cn.lushantingyue.retrofit_demo.bean.Articles;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Lushantingyue on 2017/12/28.
@@ -18,9 +19,9 @@ public interface MainView {
 
     void addArticles(ArrayList<Articles> list);
 
-    void toastTips();
+    void toastTips(int status);
 
     void clearArticles();
 
-    void hideLoadMoreFooter();
+    void saveDisposable(Disposable d);
 }

@@ -2,21 +2,20 @@ package cn.lushantingyue.retrofit_demo.main.widget.widget;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
-import com.zhy.adapter.recyclerview.wrapper.EmptyWrapper;
 import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
 import com.zhy.adapter.recyclerview.wrapper.LoadMoreWrapper;
 
@@ -24,22 +23,31 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.lushantingyue.retrofit_demo.R;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
 import cn.lushantingyue.retrofit_demo.detail.widget.ArticalDetailActivity;
 import cn.lushantingyue.retrofit_demo.listener.MyItemClickListener;
-import cn.lushantingyue.retrofit_demo.main.widget.ListRecyclerAdapter;
 import cn.lushantingyue.retrofit_demo.main.widget.presenter.MainPresenterImpl;
 import cn.lushantingyue.retrofit_demo.main.widget.view.MainView;
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity implements MainView, SwipeRefreshLayout.OnRefreshListener, MyItemClickListener {
 
     ArrayList<Articles> listData = new ArrayList<>();
 
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout mSwipeRefreshWidget;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshWidget;
+
+    @OnClick(R.id.fab)
+     public void sayHi(FloatingActionButton fab) {
+        Snackbar.make(fab, "置顶", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+        recyclerView.smoothScrollToPosition(0);
+    }
 
     private MainActivity ctx;
 
@@ -50,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     private CommonAdapter<Articles> mAdapter;
     private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
     private LoadMoreWrapper mLoadMoreWrapper;
+    private ArrayList<Disposable> dispose = new ArrayList<>();
+    private boolean canloadMore = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +68,10 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         ctx = MainActivity.this;
 
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 //        mSwipeRefreshWidget = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshWidget.setColorSchemeColors(getResources().getColor(R.color.primary),getResources().getColor(R.color.primary_dark),
-                getResources().getColor(R.color.primary_light),getResources().getColor(R.color.accent));
+        mSwipeRefreshWidget.setColorSchemeColors(getResources().getColor(R.color.primary), getResources().getColor(R.color.primary_dark),
+                getResources().getColor(R.color.primary_light), getResources().getColor(R.color.accent));
         mSwipeRefreshWidget.setOnRefreshListener(this);
 //        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -84,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
             @Override
             public void onLoadMoreRequested() {
                 curPage++;
-                mArticlesPresenter.loadArticles(curPage);
+                mArticlesPresenter.loadArticles(curPage, canloadMore);
             }
         });
 //        adapter = new ListRecyclerAdapter(ctx, listData, this);
@@ -96,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
                 // 跳转文章详情页
                 Intent intent = new Intent(ctx, ArticalDetailActivity.class);
                 Articles bean = listData.get(position);
-                Logger.i("listData is: "+ bean.getHref());
+                Logger.i("listData is: " + bean.getHref());
                 intent.putExtra("href", bean.getHref());
                 startActivity(intent);
             }
@@ -123,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     @Override
     protected void onResume() {
         super.onResume();
-        mArticlesPresenter.loadArticles(curPage);
+        mArticlesPresenter.loadArticles(curPage, canloadMore);
     }
 
     @Override
@@ -133,8 +144,12 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
 
     @Override
     public void addArticles(ArrayList<Articles> list) {
-        listData.addAll(list);
-//        adapter.notifyDataSetChanged();
+        if (list.size() > 0) {
+            listData.addAll(list);
+        } else {
+            this.canloadMore = false;
+            mLoadMoreWrapper.setLoadMoreView(R.layout.bottom);
+        }
         mLoadMoreWrapper.notifyDataSetChanged();
     }
 
@@ -151,27 +166,48 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     @Override
     public void onRefresh() {
         curPage = 1;
-        mArticlesPresenter.loadArticles(curPage);
+        canloadMore = true;
+        mArticlesPresenter.loadArticles(curPage, canloadMore);
+    }
+
+    //    加载状态判定
+    private final int STATUS_LOADING_FAILURE = -1;
+    private final int STATUS_LOADING_SUCCESS = 1;
+
+    @Override
+    public void toastTips(int status) {
+        switch (status) {
+            case STATUS_LOADING_SUCCESS:
+                Toast.makeText(this, "加载完成", Toast.LENGTH_SHORT).show();
+                break;
+            case STATUS_LOADING_FAILURE:
+                Toast.makeText(this, "加载失败", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
-    public void toastTips() {
-        Toast.makeText(this, "加载完成", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void hideLoadMoreFooter() {
-//        mHeaderAndFooterWrapper.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onItemClick(View child, int position){
+    public void onItemClick(View child, int position) {
         // 跳转文章详情页
         Intent intent = new Intent(ctx, ArticalDetailActivity.class);
         Articles bean = listData.get(position);
-        Logger.i("listData is: "+ bean.getHref());
+        Logger.i("listData is: " + bean.getHref());
         intent.putExtra("href", bean.getHref());
         startActivity(intent);
     }
 
+    @Override
+    public void saveDisposable(Disposable d) {
+        dispose.add(d);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for (int i = 0; i < dispose.size(); i++) {
+            dispose.remove(i).dispose();
+        }
+    }
 }
