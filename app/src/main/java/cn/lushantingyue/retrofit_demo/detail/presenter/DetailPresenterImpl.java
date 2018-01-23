@@ -1,15 +1,8 @@
 package cn.lushantingyue.retrofit_demo.detail.presenter;
 
-import android.view.View;
-
-import java.util.ArrayList;
-
 import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
-import cn.lushantingyue.retrofit_demo.bean.Articles;
-import cn.lushantingyue.retrofit_demo.detail.model.DetailModel;
 import cn.lushantingyue.retrofit_demo.detail.model.DetailModelImpl;
 import cn.lushantingyue.retrofit_demo.detail.view.DetailView;
-import cn.lushantingyue.retrofit_demo.detail.widget.ArticalDetailActivity;
 import io.reactivex.disposables.Disposable;
 
 /**

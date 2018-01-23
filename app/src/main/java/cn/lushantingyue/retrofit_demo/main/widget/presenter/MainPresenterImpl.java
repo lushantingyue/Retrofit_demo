@@ -2,7 +2,6 @@ package cn.lushantingyue.retrofit_demo.main.widget.presenter;
 
 import java.util.ArrayList;
 
-import cn.lushantingyue.retrofit_demo.R;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
 import cn.lushantingyue.retrofit_demo.main.widget.model.MainModelImpl;
 import cn.lushantingyue.retrofit_demo.main.widget.view.MainView;

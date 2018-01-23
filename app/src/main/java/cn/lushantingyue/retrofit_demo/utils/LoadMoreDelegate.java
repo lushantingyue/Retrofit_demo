@@ -25,6 +25,11 @@ import android.support.v7.widget.RecyclerView;
 
 /**
  * @author drakeet
+ *
+ * Created by Administrator on 2018/1/16 17.
+ * Responsibilities: RiecyclerView加载更多
+ * Description: 加载更多事件接口代理类
+ * ProjectName:
  */
 public class LoadMoreDelegate {
 
