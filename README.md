@@ -7,7 +7,7 @@ Demo to study Retrofit, RxJava, MVP.
 - [x] recylerview上拉加载扩展, onItemClick事件, 基于zhy:base-rvadapter
 - [ ]  Retrofit请求封装
 - [ ] 更换至ShimmerRecyclerView
-- [ ]  自定义behavior
-- [ ] RxJava
+- [ ] 自定义behavior
+- [x] RxJava
 - [ ] dagger2
 - [ ] kotlin版

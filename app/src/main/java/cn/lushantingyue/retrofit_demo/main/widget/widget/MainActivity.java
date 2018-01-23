@@ -14,10 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
-import com.zhy.adapter.recyclerview.wrapper.HeaderAndFooterWrapper;
-import com.zhy.adapter.recyclerview.wrapper.LoadMoreWrapper;
 
 import java.util.ArrayList;
 
@@ -30,16 +26,21 @@ import cn.lushantingyue.retrofit_demo.detail.widget.ArticalDetailActivity;
 import cn.lushantingyue.retrofit_demo.listener.MyItemClickListener;
 import cn.lushantingyue.retrofit_demo.main.widget.presenter.MainPresenterImpl;
 import cn.lushantingyue.retrofit_demo.main.widget.view.MainView;
+import cn.lushantingyue.retrofit_demo.main.widget.widget.multitype.ArticleViewBinder;
+import cn.lushantingyue.retrofit_demo.utils.LoadMoreDelegate;
 import io.reactivex.disposables.Disposable;
+import me.drakeet.multitype.MultiTypeAdapter;
 
-public class MainActivity extends AppCompatActivity implements MainView, SwipeRefreshLayout.OnRefreshListener, MyItemClickListener {
+public class MainActivity extends AppCompatActivity implements MainView, SwipeRefreshLayout.OnRefreshListener, MyItemClickListener, LoadMoreDelegate.LoadMoreSubject {
 
     ArrayList<Articles> listData = new ArrayList<>();
+    private LoadMoreDelegate loadMoreDelegate;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.fab) FloatingActionButton fab;
 
+    @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
+
     @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshWidget;
 
     @OnClick(R.id.fab)
@@ -55,9 +56,9 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     private MainPresenterImpl mArticlesPresenter;
     private int curPage = 1;
 
-    private CommonAdapter<Articles> mAdapter;
-    private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
-    private LoadMoreWrapper mLoadMoreWrapper;
+    private MultiTypeAdapter mAdapter;
+//    private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
+//    private LoadMoreWrapper mLoadMoreWrapper;
     private ArrayList<Disposable> dispose = new ArrayList<>();
     private boolean canloadMore = true;
 
@@ -81,48 +82,52 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         linearLayoutManager.setItemPrefetchEnabled(true);
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new CommonAdapter<Articles>(this, R.layout.item, listData) {
-            @Override
-            protected void convert(ViewHolder holder, Articles article, int position) {
-                holder.setText(R.id.tv_title, article.get_abstract());
-            }
-        };
+        // loadmore
+        loadMoreDelegate = new LoadMoreDelegate(this);
+
+        mAdapter = new MultiTypeAdapter();
+        mAdapter.register(Articles.class, new ArticleViewBinder());
+        recyclerView.setAdapter(mAdapter);
+        // loadmore
+        loadMoreDelegate.attach(recyclerView);
+
+        mAdapter.setItems(listData);
+        mAdapter.notifyDataSetChanged();
+
         initHeaderAndFooter();
 
-        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
-        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
-        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                curPage++;
-                mArticlesPresenter.loadArticles(curPage, canloadMore);
-            }
-        });
-//        adapter = new ListRecyclerAdapter(ctx, listData, this);
-//        recyclerView.setAdapter(adapter);
-        recyclerView.setAdapter(mLoadMoreWrapper);
-        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                // 跳转文章详情页
-                Intent intent = new Intent(ctx, ArticalDetailActivity.class);
-                Articles bean = listData.get(position);
-                Logger.i("listData is: " + bean.getHref());
-                intent.putExtra("href", bean.getHref());
-                startActivity(intent);
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
+//        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
+//        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
+//        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
+//            @Override
+//            public void onLoadMoreRequested() {
+//                curPage++;
+//                mArticlesPresenter.loadArticles(curPage, canloadMore);
+//            }
+//        });
+//        recyclerView.setAdapter(mLoadMoreWrapper);
+//        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                // 跳转文章详情页
+//                Intent intent = new Intent(ctx, ArticalDetailActivity.class);
+//                Articles bean = listData.get(position);
+//                Logger.i("listData is: " + bean.getHref());
+//                intent.putExtra("href", bean.getHref());
+//                startActivity(intent);
+//            }
+//
+//            @Override
+//            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                return false;
+//            }
+//        });
 
         mArticlesPresenter = new MainPresenterImpl(this);
     }
 
     private void initHeaderAndFooter() {
-        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
+//        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
         TextView t1 = new TextView(this);
         t1.setText(" -- 顶部视图 -- ");
         TextView b1 = new TextView(this);
@@ -149,7 +154,8 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         } else {
             this.canloadMore = false;
         }
-        mLoadMoreWrapper.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
+//        mLoadMoreWrapper.notifyDataSetChanged();
     }
 
     @Override
@@ -177,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
     public void toastTips(int status) {
         switch (status) {
             case STATUS_LOADING_SUCCESS:
-                Logger.i("item count= "+ mLoadMoreWrapper.getItemCount());
+//                Logger.i("item count= "+ mLoadMoreWrapper.getItemCount());
                 Toast.makeText(this, "加载完成", Toast.LENGTH_SHORT).show();
                 break;
             case STATUS_LOADING_FAILURE:
@@ -211,5 +217,16 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
             dispose.remove(i).dispose();
             Logger.i("remove dispose");
         }
+    }
+
+    @Override
+    public boolean isLoading() {
+        return false;
+    }
+
+    @Override
+    public void onLoadMore() {
+        curPage++;
+        mArticlesPresenter.loadArticles(curPage, canloadMore);
     }
 }

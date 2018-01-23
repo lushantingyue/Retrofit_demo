@@ -71,7 +71,7 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
 //        setView();
         href = this.getIntent().getExtras().getString("href");
 
-        title.setText(href!=null?href:"");
+//        title.setText(href!=null?href:"");
 
         mPresenter = new DetailPresenterImpl(this);
     }

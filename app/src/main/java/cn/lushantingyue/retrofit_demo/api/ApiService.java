@@ -6,8 +6,6 @@ import java.util.HashMap;
 import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
