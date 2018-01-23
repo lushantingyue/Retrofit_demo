@@ -31,7 +31,8 @@ import cn.lushantingyue.retrofit_demo.utils.LoadMoreDelegate;
 import io.reactivex.disposables.Disposable;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-public class MainActivity extends AppCompatActivity implements MainView, SwipeRefreshLayout.OnRefreshListener, MyItemClickListener, LoadMoreDelegate.LoadMoreSubject {
+public class MainActivity extends AppCompatActivity implements MainView,
+        SwipeRefreshLayout.OnRefreshListener, MyItemClickListener, LoadMoreDelegate.LoadMoreSubject {
 
     ArrayList<Articles> listData = new ArrayList<>();
     private LoadMoreDelegate loadMoreDelegate;
@@ -86,54 +87,18 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
         loadMoreDelegate = new LoadMoreDelegate(this);
 
         mAdapter = new MultiTypeAdapter();
-        mAdapter.register(Articles.class, new ArticleViewBinder());
+        // 传入 OnItemClickListener
+        mAdapter.register(Articles.class, new ArticleViewBinder(this));
         recyclerView.setAdapter(mAdapter);
         // loadmore
         loadMoreDelegate.attach(recyclerView);
 
         mAdapter.setItems(listData);
         mAdapter.notifyDataSetChanged();
+        // 实现加载更多FooterV
 
-        initHeaderAndFooter();
-
-//        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
 //        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
-//        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
-//            @Override
-//            public void onLoadMoreRequested() {
-//                curPage++;
-//                mArticlesPresenter.loadArticles(curPage, canloadMore);
-//            }
-//        });
-//        recyclerView.setAdapter(mLoadMoreWrapper);
-//        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                // 跳转文章详情页
-//                Intent intent = new Intent(ctx, ArticalDetailActivity.class);
-//                Articles bean = listData.get(position);
-//                Logger.i("listData is: " + bean.getHref());
-//                intent.putExtra("href", bean.getHref());
-//                startActivity(intent);
-//            }
-//
-//            @Override
-//            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                return false;
-//            }
-//        });
-
         mArticlesPresenter = new MainPresenterImpl(this);
-    }
-
-    private void initHeaderAndFooter() {
-//        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
-        TextView t1 = new TextView(this);
-        t1.setText(" -- 顶部视图 -- ");
-        TextView b1 = new TextView(this);
-        b1.setText(" -- 底部视图 -- ");
-//        mHeaderAndFooterWrapper.addHeaderView(t1);
-//        mHeaderAndFooterWrapper.addFootView(b1);
     }
 
     @Override
@@ -155,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements MainView, SwipeRe
             this.canloadMore = false;
         }
         mAdapter.notifyDataSetChanged();
-//        mLoadMoreWrapper.notifyDataSetChanged();
     }
 
     @Override

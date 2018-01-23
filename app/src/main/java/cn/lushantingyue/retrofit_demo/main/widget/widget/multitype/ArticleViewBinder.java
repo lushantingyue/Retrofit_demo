@@ -1,5 +1,6 @@
 package cn.lushantingyue.retrofit_demo.main.widget.widget.multitype;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import cn.lushantingyue.retrofit_demo.R;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
+import cn.lushantingyue.retrofit_demo.listener.MyItemClickListener;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -20,11 +22,20 @@ import me.drakeet.multitype.ItemViewBinder;
 
 public class ArticleViewBinder extends ItemViewBinder<Articles, ArticleViewBinder.ViewHolder> {
 
+    private MyItemClickListener mlistener;
+    public Context ctx;
+
+    public ArticleViewBinder(MyItemClickListener listener) {
+        this.mlistener = listener;
+    }
+
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View root = inflater.inflate(R.layout.item, parent, false);
-        return new ViewHolder(root);
+        this.ctx = parent.getContext();
+//        return new ViewHolder(root);
+        return new ViewHolder(root, mlistener);
     }
 
     @Override
@@ -34,12 +45,18 @@ public class ArticleViewBinder extends ItemViewBinder<Articles, ArticleViewBinde
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @NonNull
-        private final TextView tv_title;
+        @NonNull private TextView tv_title;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView, final MyItemClickListener mlistener) {
             super(itemView);
             this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mlistener.onItemClick(itemView, getPosition());
+                }
+            });
         }
+
     }
 }
