@@ -1,5 +1,6 @@
 package cn.lushantingyue.retrofit_demo.detail.model;
 
+import cn.lushantingyue.retrofit_demo.api.RemoteData;
 import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
 import cn.lushantingyue.retrofit_demo.api.RetrofitWrapper;
 import io.reactivex.disposables.Disposable;
@@ -17,7 +18,8 @@ public class DetailModelImpl implements DetailModel {
     public void loadArticlesDetail(String href, DetailModelImpl.OnLoadArticlesDetailListener listener) {
 
         String subHref = href.split("/p/")[1];
-        RetrofitWrapper.getInstance().articleDetail(listener, subHref);
+//        RetrofitWrapper.getInstance().articleDetail(listener, subHref);
+        new RemoteData().articleDetail(listener, subHref);
     }
 
     /**

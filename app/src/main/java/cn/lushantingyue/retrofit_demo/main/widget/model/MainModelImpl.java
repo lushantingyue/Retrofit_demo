@@ -2,6 +2,7 @@ package cn.lushantingyue.retrofit_demo.main.widget.model;
 
 import java.util.ArrayList;
 
+import cn.lushantingyue.retrofit_demo.api.RemoteData;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
 import cn.lushantingyue.retrofit_demo.api.RetrofitWrapper;
 import io.reactivex.disposables.Disposable;
@@ -18,7 +19,8 @@ public class MainModelImpl implements MainModel {
     @Override
     public void loadArticles(final OnLoadArticlesListListener listener, final int curPage) {
 
-        RetrofitWrapper.getInstance().listDataByPage(listener, curPage);
+//        RetrofitWrapper.getInstance().listDataByPage(listener, curPage);
+        new RemoteData().listDataByPage(listener, curPage);
     }
 
     public interface OnLoadArticlesListListener {
