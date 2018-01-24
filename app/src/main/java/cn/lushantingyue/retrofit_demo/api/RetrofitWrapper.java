@@ -1,14 +1,14 @@
-package cn.lushantingyue.retrofit_demo.utils;
+package cn.lushantingyue.retrofit_demo.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import cn.lushantingyue.retrofit_demo.api.ApiService;
 import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
 import cn.lushantingyue.retrofit_demo.bean.Articles;
 import cn.lushantingyue.retrofit_demo.detail.model.DetailModelImpl;
 import cn.lushantingyue.retrofit_demo.main.widget.model.MainModelImpl;
+import cn.lushantingyue.retrofit_demo.utils.Constant;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;

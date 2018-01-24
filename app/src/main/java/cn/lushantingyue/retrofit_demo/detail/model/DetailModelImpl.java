@@ -1,16 +1,8 @@
 package cn.lushantingyue.retrofit_demo.detail.model;
 
-import cn.lushantingyue.retrofit_demo.api.ApiService;
 import cn.lushantingyue.retrofit_demo.bean.ArticleDetail;
-import cn.lushantingyue.retrofit_demo.bean.Articles;
-import cn.lushantingyue.retrofit_demo.utils.Constant;
-import cn.lushantingyue.retrofit_demo.utils.RetrofitWrapper;
+import cn.lushantingyue.retrofit_demo.api.RetrofitWrapper;
 import io.reactivex.disposables.Disposable;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Administrator on 2017/12/29 11.
@@ -20,7 +12,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class DetailModelImpl implements DetailModel {
-
 
     @Override
     public void loadArticlesDetail(String href, DetailModelImpl.OnLoadArticlesDetailListener listener) {
@@ -38,4 +29,5 @@ public class DetailModelImpl implements DetailModel {
 
         void saveDisposable(Disposable d);
     }
+
 }

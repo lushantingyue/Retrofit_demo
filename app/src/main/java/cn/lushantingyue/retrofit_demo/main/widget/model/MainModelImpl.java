@@ -3,7 +3,7 @@ package cn.lushantingyue.retrofit_demo.main.widget.model;
 import java.util.ArrayList;
 
 import cn.lushantingyue.retrofit_demo.bean.Articles;
-import cn.lushantingyue.retrofit_demo.utils.RetrofitWrapper;
+import cn.lushantingyue.retrofit_demo.api.RetrofitWrapper;
 import io.reactivex.disposables.Disposable;
 
 /**
