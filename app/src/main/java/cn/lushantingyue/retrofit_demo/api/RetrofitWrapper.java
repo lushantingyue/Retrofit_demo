@@ -1,5 +1,7 @@
 package cn.lushantingyue.retrofit_demo.api;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +37,12 @@ public class RetrofitWrapper {
 
     RetrofitWrapper() {
 
-        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                Logger.i(message);
+            }
+        });
         if (BuildConfig.DEBUG) {
             logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         } else {
@@ -46,6 +53,7 @@ public class RetrofitWrapper {
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(9, TimeUnit.SECONDS);
         builder.addInterceptor(logInterceptor);
+        builder.addNetworkInterceptor(new MockInterceptor());
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(Constant.baseUrl)
