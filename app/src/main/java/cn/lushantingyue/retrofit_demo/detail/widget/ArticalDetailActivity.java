@@ -155,4 +155,5 @@ public class ArticalDetailActivity extends AppCompatActivity implements DetailVi
             Logger.i("remove dispose: " + i);
         }
     }
+
 }

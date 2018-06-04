@@ -32,4 +32,7 @@ public interface ApiService {
     //  根据文章关联href 请求文章详情
     @GET("data/jianshuDetail/{articalId}")
     Observable<ArticleDetail> articleDetail(@Path("articalId") String articalId);
+
+//    @POST("upload/pic")
+//    Observable<Status>
 }
