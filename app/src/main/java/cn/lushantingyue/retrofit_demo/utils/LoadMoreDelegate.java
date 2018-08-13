@@ -31,6 +31,7 @@ import android.support.v7.widget.RecyclerView;
  * Description: 加载更多事件接口代理类
  * ProjectName:
  */
+// TODO: 2018/6/4  委托类: 处理上拉加载更多行为
 public class LoadMoreDelegate {
 
     private final LoadMoreSubject loadMoreSubject;
